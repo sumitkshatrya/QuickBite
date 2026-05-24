@@ -17,13 +17,21 @@ connectDB();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const allowedOrigins = (process.env.ALLOWED_ORIGINS ||
-  'http://localhost:5173')
-  .split(',')
-  .map((origin) => origin.trim().replace(/\/$/, ''))
-  .filter(Boolean);
+const defaultAllowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://quickbite-1-s5x0.onrender.com',
+];
 
-app.use(cors({
+const allowedOrigins = Array.from(new Set([
+  ...defaultAllowedOrigins,
+  ...(process.env.ALLOWED_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/$/, ''))
+    .filter(Boolean),
+]));
+
+const corsOptions = {
   origin(origin, callback) {
     if (!origin) {
       return callback(null, true);
@@ -36,7 +44,13 @@ app.use(cors({
 
     return callback(new Error('Not allowed by CORS'));
   },
-}));
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

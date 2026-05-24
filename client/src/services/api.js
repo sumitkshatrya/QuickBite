@@ -13,9 +13,10 @@ const buildQueryString = (params = {}) => {
 
 export const request = async (path, options = {}) => {
   const token = localStorage.getItem('quickbiteToken');
+  const hasJsonBody = options.body !== undefined && !(options.body instanceof FormData);
   const headers = {
     ...(options.headers || {}),
-    ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+    ...(hasJsonBody ? { 'Content-Type': 'application/json' } : {}),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
