@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const allowedOrigins = (process.env.ALLOWED_ORIGINS ||
-  'http://localhost:5173,https://quickbite-1-s5x0.onrender.com')
+  'http://localhost:5173')
   .split(',')
   .map((origin) => origin.trim().replace(/\/$/, ''))
   .filter(Boolean);
