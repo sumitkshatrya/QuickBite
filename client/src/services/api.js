@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_URL;
+const RAW_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const API_BASE_URL = RAW_BASE_URL.endsWith('/api') ? RAW_BASE_URL : `${RAW_BASE_URL}/api`;
 
 const buildQueryString = (params = {}) => {
   const searchParams = new URLSearchParams();
@@ -22,7 +23,7 @@ export const request = async (path, options = {}) => {
 
   let response;
   try {
-    response = await fetch(`${BASE_URL}${path}`, {
+    response = await fetch(`${API_BASE_URL}${path}`, {
       ...options,
       headers,
     });

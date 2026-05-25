@@ -50,6 +50,14 @@ app.get('/', (req, res) => {
   res.json({ message: 'QuickBite API is running' });
 });
 
+
+app.use('/auth', authRoutes);
+app.use('/foods', foodRoutes);
+app.use('/orders', orderRoutes);
+app.use('/restaurants', restaurantRoutes);
+app.use('/users', userRoutes);
+app.use('/uploads', uploadRoutes);
+
 app.use('/api/auth', authRoutes);
 app.use('/api/foods', foodRoutes);
 app.use('/api/orders', orderRoutes);
