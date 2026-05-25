@@ -19,8 +19,7 @@ const __dirname = path.dirname(__filename);
 
 const defaultAllowedOrigins = [
   'http://localhost:5173',
-  'http://localhost:3000',
-  'https://quickbite-1-s5x0.onrender.com',
+  // 'https://quickbite-1-s5x0.onrender.com',
 ];
 
 const allowedOrigins = Array.from(new Set([
