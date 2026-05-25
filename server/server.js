@@ -17,18 +17,11 @@ connectDB();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const defaultAllowedOrigins = [
-  'http://localhost:5173',
-  // 'https://quickbite-1-s5x0.onrender.com',
-];
 
-const allowedOrigins = Array.from(new Set([
-  ...defaultAllowedOrigins,
-  ...(process.env.ALLOWED_ORIGINS || '')
+const allowedOrigins = (process.env.CLIENT_URL || "")
     .split(',')
     .map((origin) => origin.trim().replace(/\/$/, ''))
-    .filter(Boolean),
-]));
+    .filter(Boolean);
 
 const corsOptions = {
   origin(origin, callback) {
