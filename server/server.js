@@ -65,9 +65,16 @@ app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/uploads', uploadRoutes);
 
+
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
+
 
 app.use(errorHandler);
 
