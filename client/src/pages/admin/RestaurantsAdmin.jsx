@@ -103,7 +103,8 @@ export default function RestaurantsAdmin() {
                 <div className="text-slate-500">Loading restaurants…</div>
               ) : (
                 restaurants.map((rest) => (
-                  <div key={rest._id ?? rest.name} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+                  <div key={rest._id} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+
                     <img
                       src={getImageSrc(rest.image, `https://placehold.co/800x400/e2e8f0/334155?text=${encodeURIComponent(rest.name || 'Restaurant')}`)}
                       alt={rest.name}

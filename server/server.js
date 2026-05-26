@@ -14,14 +14,14 @@ import errorHandler from './middleware/errorHandler.js';
 
 const app = express();
 connectDB();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
-const allowedOrigins = (process.env.CLIENT_URL || "")
-    .split(',')
-    .map((origin) => origin.trim().replace(/\/$/, ''))
-    .filter(Boolean);
+const allowedOrigins = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map((origin) => origin.trim().replace(/\/$/, ''))
+  .filter(Boolean);
 
 const corsOptions = {
   origin(origin, callback) {
@@ -30,6 +30,7 @@ const corsOptions = {
     }
 
     const normalizedOrigin = origin.replace(/\/$/, '');
+
     if (allowedOrigins.includes(normalizedOrigin)) {
       return callback(null, true);
     }
@@ -38,7 +39,8 @@ const corsOptions = {
   },
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 204,
+  credentials: true,
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
@@ -47,9 +49,11 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {
-  res.json({ message: 'QuickBite API is running' });
+  res.status(200).json({
+    success: true,
+    message: 'QuickBite API is running',
+  });
 });
-
 
 app.use('/auth', authRoutes);
 app.use('/foods', foodRoutes);
@@ -65,19 +69,29 @@ app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/uploads', uploadRoutes);
 
+const distPath = path.join(__dirname, 'dist');
+app.use(express.static(distPath));
 
-app.get(/.*/, (req, res, next) => {
-  if (req.path.startsWith('/api')) return next();
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+app.use((req, res, next) => {
+  if (
+    req.path.startsWith('/api') ||
+    req.path.startsWith('/auth') ||
+    req.path.startsWith('/foods') ||
+    req.path.startsWith('/orders') ||
+    req.path.startsWith('/restaurants') ||
+    req.path.startsWith('/users') ||
+    req.path.startsWith('/uploads')
+  ) {
+    return next();
+  }
+
+  res.sendFile(path.join(distPath, 'index.html'));
 });
-
-
 
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(` Server running on port ${PORT}`);
 });
-
 

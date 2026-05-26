@@ -1,13 +1,19 @@
 {
+<<<<<<< HEAD
   "name": "quickbite-server",
   "version": "0.1.0",
   "private": true,
+=======
+  "name": "server",
+  "version": "1.0.0",
+>>>>>>> a7c6aa7d982a2417a0802fb2d244431ea6e761b8
   "description": "",
   "license": "ISC",
   "author": "",
   "type": "module",
   "main": "server.js",
   "scripts": {
+<<<<<<< HEAD
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
@@ -23,5 +29,20 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
+=======
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.6.2",
+    "multer": "^2.1.1",
+    "nodemon": "^3.1.14"
+>>>>>>> a7c6aa7d982a2417a0802fb2d244431ea6e761b8
   }
 }
