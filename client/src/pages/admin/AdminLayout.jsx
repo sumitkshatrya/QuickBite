@@ -4,7 +4,7 @@ import AdminTopbar from '../../components/AdminTopbar.jsx';
 
 export default function AdminLayout() {
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen min-w-0 overflow-x-hidden bg-slate-100">
       <AdminTopbar />
       <div className="lg:flex">
         <AdminSidebar />

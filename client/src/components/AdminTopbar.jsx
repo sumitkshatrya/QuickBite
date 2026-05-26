@@ -128,17 +128,17 @@ export default function AdminTopbar() {
               </button>
 
               {isOpen && (
-                <div className="absolute right-0 mt-3 w-[calc(100vw-2rem)] max-w-80 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl sm:w-80">
+                <div className="fixed inset-x-4 top-20 z-40 max-h-96 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl sm:absolute sm:inset-auto sm:right-0 sm:top-auto sm:mt-3 sm:w-80 sm:max-h-80">
                   <div className="border-b border-slate-200 px-5 py-4">
                     <p className="text-sm font-semibold text-slate-900">New Order Notifications</p>
                     <p className="mt-1 text-xs text-slate-500">Booked orders waiting for admin action.</p>
                   </div>
 
-                  <div className="max-h-80 overflow-y-auto">
+                  <div className="max-h-64 overflow-y-auto sm:max-h-64">
                     {bookedOrders.length === 0 ? (
                       <div className="px-5 py-6 text-sm text-slate-500">No new booked orders right now.</div>
                     ) : (
-                      bookedOrders.slice(0, 8).map((order) => (
+                      bookedOrders.slice(0, 10).map((order) => (
                         <button
                           key={order._id}
                           type="button"
@@ -146,17 +146,17 @@ export default function AdminTopbar() {
                             setIsOpen(false);
                             navigate('/admin/orders');
                           }}
-                          className="block w-full border-b border-slate-100 px-5 py-4 text-left transition hover:bg-slate-50"
+                          className="block w-full border-b border-slate-100 px-4 py-3 text-left text-sm transition hover:bg-slate-50 sm:px-5 sm:py-4"
                         >
-                          <div className="flex items-start justify-between gap-3">
-                            <div>
-                              <p className="text-sm font-semibold text-slate-900">Order #{order._id.slice(-6)}</p>
+                          <div className="flex items-start justify-between gap-2 sm:gap-3">
+                            <div className="min-w-0 flex-1">
+                              <p className="font-semibold text-slate-900">Order #{order._id.slice(-6)}</p>
                               <p className="mt-1 text-xs text-slate-500">
-                                {order.items?.length || 0} item(s) booked by user
+                                {order.items?.length || 0} item(s)
                               </p>
                             </div>
                             {!seenOrderIds.includes(order._id) && (
-                              <span className="rounded-full bg-emerald-100 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-emerald-700">
+                              <span className="rounded-full bg-emerald-100 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-emerald-700 flex-shrink-0">
                                 New
                               </span>
                             )}
@@ -170,9 +170,17 @@ export default function AdminTopbar() {
                   </div>
                 </div>
               )}
+              {isOpen && (
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="fixed inset-0 z-30 sm:hidden"
+                  aria-label="Close notifications"
+                />
+              )}
             </div>
 
-            <div className="hidden text-right sm:block">
+            <div className="text-right">
               <p className="text-sm font-semibold text-slate-900">{user?.name || 'Admin'}</p>
               <p className="text-xs text-slate-500">Logged in</p>
             </div>
@@ -188,7 +196,7 @@ export default function AdminTopbar() {
         </div>
 
         {isNavOpen && (
-          <nav className="mt-4 grid gap-2 rounded-3xl border border-slate-200 bg-slate-50 p-3 lg:hidden">
+          <nav className="mt-4 max-h-96 overflow-y-auto grid gap-2 rounded-3xl border border-slate-200 bg-slate-50 p-3 lg:hidden">
             {adminLinks.map((link) => (
               <NavLink
                 key={link.to}

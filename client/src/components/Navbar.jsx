@@ -134,8 +134,16 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className={`${isOpen ? 'max-h-[26rem] opacity-100' : 'max-h-0 opacity-0'} overflow-hidden transition-[max-height,opacity] duration-300 md:hidden`}>
+        <div className={`${isOpen ? 'max-h-[90vh] opacity-100' : 'max-h-0 opacity-0'} overflow-y-auto transition-[max-height,opacity] duration-300 md:hidden`}>
           <div className="mt-4 space-y-4 rounded-3xl border border-slate-200 bg-slate-50/90 p-4 shadow-sm">
+            {user && (
+              <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                <p className="text-sm font-semibold text-slate-900">{user.name}</p>
+                <p className="mt-1 text-xs uppercase tracking-[0.25em] text-slate-500">
+                  {user.isAdmin || user.role === 'admin' ? 'Admin' : 'User'}
+                </p>
+              </div>
+            )}
             <form onSubmit={handleSearchSubmit} className="flex items-center gap-3">
               <input
                 value={search}
@@ -180,7 +188,7 @@ const Navbar = () => {
               </span>
             </Link>
 
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3">
               {user ? (
                 <button
                   type="button"
@@ -189,26 +197,28 @@ const Navbar = () => {
                     navigate('/');
                     setIsOpen(false);
                   }}
-                  className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
+                  className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 w-full"
                 >
                   Logout
                 </button>
               ) : (
-                <Link
-                  to="/login"
-                  className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white text-center transition hover:bg-slate-700"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Login
-                </Link>
+                <>
+                  <Link
+                    to="/login"
+                    className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white text-center transition hover:bg-slate-700 block"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 text-center transition hover:bg-slate-100 block"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Sign up
+                  </Link>
+                </>
               )}
-              <Link
-                to="/register"
-                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 text-center transition hover:bg-slate-100"
-                onClick={() => setIsOpen(false)}
-              >
-                Sign up
-              </Link>
             </div>
           </div>
         </div>

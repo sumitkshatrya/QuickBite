@@ -21,10 +21,10 @@ const FoodCard = ({ food }) => {
           Popular
         </span>
       </div>
-      <div className="space-y-4 p-6">
+      <div className="space-y-4 p-6 min-w-0">
         <div>
-          <div className="flex items-center gap-3">
-            <h3 className="text-2xl font-semibold text-slate-950">{food.name}</h3>
+          <div className="flex flex-wrap items-start gap-3">
+            <h3 className="min-w-0 text-2xl font-semibold text-slate-950">{food.name}</h3>
             {food.isVegetarian && (
               <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
                 Veg
