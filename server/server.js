@@ -17,13 +17,46 @@ connectDB();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(cors());
+
+const allowedOrigins = (process.env.CLIENT_URL || "")
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const normalizedOrigin = origin.replace(/\/$/, '');
+    if (allowedOrigins.includes(normalizedOrigin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {
   res.json({ message: 'QuickBite API is running' });
 });
+
+
+app.use('/auth', authRoutes);
+app.use('/foods', foodRoutes);
+app.use('/orders', orderRoutes);
+app.use('/restaurants', restaurantRoutes);
+app.use('/users', userRoutes);
+app.use('/uploads', uploadRoutes);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/foods', foodRoutes);
@@ -32,9 +65,13 @@ app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/uploads', uploadRoutes);
 
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+
+app.get(/.*/, (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
+
+
 
 app.use(errorHandler);
 
@@ -42,3 +79,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+

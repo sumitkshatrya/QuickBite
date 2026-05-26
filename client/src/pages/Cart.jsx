@@ -25,14 +25,14 @@ const Cart = () => {
       return;
     }
 
-    dispatch(applyCoupon(code));
-    setCouponCode('');
-
     if (code === 'QUICK10' || code === 'SAVE20') {
+      dispatch(applyCoupon(code));
       setCouponMessage(`Coupon ${code} applied successfully.`);
     } else {
       setCouponMessage('Coupon not recognized. Try QUICK10 or SAVE20.');
     }
+
+    setCouponCode('');
   };
 
   return (

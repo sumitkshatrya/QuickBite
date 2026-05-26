@@ -9,7 +9,8 @@ const isValidUrl = (value) => {
   }
 };
 
-const API_ORIGIN = new URL(import.meta.env.VITE_API_URL || 'http://localhost:5000/api').origin;
+const rawApiUrl = (import.meta.env.VITE_API_URL || '').trim();
+const API_ORIGIN = rawApiUrl ? new URL(rawApiUrl).origin : '';
 
 const normalizeRelativeUploadPath = (value) => {
   if (typeof value !== 'string') return '';
@@ -22,11 +23,11 @@ const normalizeRelativeUploadPath = (value) => {
   }
 
   if (normalized.startsWith('/uploads/')) {
-    return `${API_ORIGIN}${normalized}`;
+    return API_ORIGIN ? `${API_ORIGIN}${normalized}` : normalized;
   }
 
   if (normalized.startsWith('uploads/')) {
-    return `${API_ORIGIN}/${normalized}`;
+    return API_ORIGIN ? `${API_ORIGIN}/${normalized}` : `/${normalized}`;
   }
 
   return '';

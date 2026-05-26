@@ -33,10 +33,10 @@ const RestaurantCard = ({ restaurant }) => {
   const content = (
     <article className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl">
       <img src={imageSrc} alt={restaurant.name} loading="lazy" className="h-56 w-full object-cover" />
-      <div className="p-6">
+      <div className="p-6 min-w-0">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h3 className="text-xl font-semibold text-slate-950">{restaurant.name}</h3>
+          <div className="min-w-0">
+            <h3 className="text-xl font-semibold text-slate-950 truncate">{restaurant.name}</h3>
             <p className="mt-2 text-sm text-slate-500">{restaurant.cuisine}</p>
           </div>
           <div className="rounded-2xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white">{safeToFixed(ratingValue, 1)}</div>

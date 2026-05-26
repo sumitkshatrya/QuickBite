@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const RAW_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const API_BASE_URL = RAW_BASE_URL.endsWith('/api') ? RAW_BASE_URL : `${RAW_BASE_URL}/api`;
 
 const buildQueryString = (params = {}) => {
   const searchParams = new URLSearchParams();
@@ -13,15 +14,16 @@ const buildQueryString = (params = {}) => {
 
 export const request = async (path, options = {}) => {
   const token = localStorage.getItem('quickbiteToken');
+  const hasJsonBody = options.body !== undefined && !(options.body instanceof FormData);
   const headers = {
     ...(options.headers || {}),
-    ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+    ...(hasJsonBody ? { 'Content-Type': 'application/json' } : {}),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
   let response;
   try {
-    response = await fetch(`${BASE_URL}${path}`, {
+    response = await fetch(`${API_BASE_URL}${path}`, {
       ...options,
       headers,
     });
